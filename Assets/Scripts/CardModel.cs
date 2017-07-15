@@ -1,30 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CardModel : MonoBehaviour {
 
-    SpriteRenderer spriteRenderer;
+    public List<Sprite> cardFaces;
 
-    public Sprite[] faces;
-    public Sprite cardBack;
+    Image image;
 
-    public int cardIndex;
-
-    public void ShowCard(bool isFaceShown)
+    public void ShowCardFace(int cardIndex)
     {
-        if (isFaceShown)
-        {
-            spriteRenderer.sprite = faces[cardIndex];
-        }
-        else
-        {
-            spriteRenderer.sprite = cardBack;
-        }
+        image.sprite = cardFaces[cardIndex];
     }
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        image = GetComponent<Image>();
     }
 }
