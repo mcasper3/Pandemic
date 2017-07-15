@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour {
 
             if (isSecondCard)
             {
+                // TODO do infection step
                 MoveToNextPlayer();
             }
 
