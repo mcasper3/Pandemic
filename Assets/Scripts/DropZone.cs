@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DropZone : MonoBehaviour, IDropHandler {
+public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler {
 
     public enum DropZoneType { PLAYER, INFECTION, HAND };
 
@@ -12,6 +13,36 @@ public class DropZone : MonoBehaviour, IDropHandler {
 
     public List<GameObject> usedCards;
     private int usedCardCount;
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        var card = eventData.pointerDrag;
+
+        if (card == null)
+            return;
+
+        Draggable draggable = card.GetComponent<Draggable>();
+
+        if (draggable != null && draggable.placeholderParent != this.transform)
+        {
+            draggable.placeholderParent = draggable.parentToReturnTo;
+        }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        var card = eventData.pointerDrag;
+
+        if (card == null)
+            return;
+
+        Draggable draggable = card.GetComponent<Draggable>();
+
+        if (draggable != null)
+        {
+            draggable.placeholderParent = this.transform;
+        }
+    }
 
     public void OnDrop(PointerEventData eventData)
     {

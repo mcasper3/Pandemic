@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour {
             if (cardModel.cardType == CardModel.CardType.EPIDEMIC)
             {
                 // TODO increment epidemic count and potentially infection rate
+                Destroy(card);
             }
             else
             {
