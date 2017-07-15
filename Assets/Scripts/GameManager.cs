@@ -4,17 +4,29 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-    public CardDeck playerCards;
+    public CardDeck playerCardDeck;
     public List<PlayerHand> playerHands;
 
     private int currentPlayer;
     
     public void OnPlayerCardClick()
     {
-        if (!playerCards.IsEmpty)
+        if (!playerCardDeck.IsEmpty)
         {
-            playerHands[currentPlayer].AddCard(playerCards.DrawCard());
-        } else
+            var card = playerCardDeck.DrawCard();
+
+            var cardModel = card.GetComponent<CardModel>();
+
+            if (cardModel.cardType == CardModel.CardType.EPIDEMIC)
+            {
+                // TODO increment epidemic count and potentially infection rate
+            }
+            else
+            {
+                playerHands[currentPlayer].AddCard(card);
+            }
+        }
+        else
         {
             Debug.Log("Out of cards!");
         }
