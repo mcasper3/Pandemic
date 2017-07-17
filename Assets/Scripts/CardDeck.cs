@@ -1,14 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardDeck : MonoBehaviour {
-    const int NUM_CARDS = 6;
-
+public class CardDeck : MonoBehaviour
+{
     public Text cardCount;
     public GameObject cardPrefab;
+    public DropZone.DropZoneType cardType;
 
     private List<int> cards;
     private int numCards;
@@ -21,8 +19,15 @@ public class CardDeck : MonoBehaviour {
     void Start()
     {
         cards = new List<int>();
-        numCards = NUM_CARDS;
         cardCount.text = numCards.ToString();
+
+        numCards = cardType == DropZone.DropZoneType.PLAYER ? 59 : 48;
+        // TODO remove
+        numCards = 10;
+
+        if (this.GetComponent<DropZone>() != null)
+            numCards = 0;
+
         this.CreateDeck();
     }
 
@@ -36,13 +41,21 @@ public class CardDeck : MonoBehaviour {
 
     public void CreateDeck()
     {
+        if (cardCount != null)
+            cardCount.text = numCards.ToString();
+
        cards.Clear();
 
-        for (int i = 0; i < NUM_CARDS; i++)
+        for (int i = 0; i < numCards; i++)
         {
             cards.Add(i);
         }
 
+        Shuffle();
+    }
+
+    public void Shuffle()
+    {
         int n = cards.Count;
 
         while (n > 1)
@@ -70,5 +83,15 @@ public class CardDeck : MonoBehaviour {
         cardModel.ShowCardFace(card);
 
         return cardGameObject;
+    }
+
+    public void AddCardsToTop(IEnumerable<int> cardsToInsert)
+    {
+        cards.InsertRange(0, cardsToInsert);
+    }
+
+    public void AddCard(int card)
+    {
+        cards.Insert(0, card);
     }
 }

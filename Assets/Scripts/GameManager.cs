@@ -1,17 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
+    public GameInfo gameInfo;
     public CardDeck playerCardDeck;
     public List<PlayerHand> playerHands;
 
     private int currentPlayer;
     private Color currentPlayerDisabledColor;
     private bool isSecondCard;
+
+    private List<string> roles;
     
+    public void EndGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+
+        SceneManager.LoadScene("Main Menu");
+    }
+
     public void OnPlayerCardClick()
     {
         if (!playerCardDeck.IsEmpty)
@@ -22,7 +35,8 @@ public class GameManager : MonoBehaviour {
 
             if (cardModel.cardType == CardModel.CardType.EPIDEMIC)
             {
-                // TODO increment epidemic count and potentially infection rate
+                // TODO increment infection rate
+                gameInfo.UpdateInfectionRate();
                 Destroy(card);
             }
             else
@@ -46,11 +60,42 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        currentPlayer = 0;
-        currentPlayerDisabledColor = playerHands[0].GetComponent<Image>().color;
-        playerHands[0].GetComponent<Image>().color = new Color(currentPlayerDisabledColor.r, currentPlayerDisabledColor.g, currentPlayerDisabledColor.b);
-        isSecondCard = false;
+        StartGame();
 	}
+
+    private void StartGame()
+    {
+        // TODO assign roles
+        AssignRoles();
+
+        playerCardDeck.CreateDeck();
+        // TODO deal out x cards to each player (make sure to avoid epidemics)
+        // for int i = 0; i < total number of cards for players
+        // playerhand[i % 4].AddCard(card);
+        SetFirstPlayer(0);
+
+        // TODO figure out who will go first
+    }
+
+    private void AssignRoles()
+    {
+        roles = new List<string>(7);
+        roles.Add("Medic");
+        roles.Add("Dispatcher");
+        roles.Add("Quarantine Specialist");
+        roles.Add("Contingency Planner");
+        roles.Add("Researcher");
+        roles.Add("Scientist");
+        roles.Add("Operations Expert");
+    }
+
+    private void SetFirstPlayer(int position)
+    {
+        currentPlayer = position;
+        currentPlayerDisabledColor = playerHands[position].GetComponent<Image>().color;
+        playerHands[position].GetComponent<Image>().color = new Color(currentPlayerDisabledColor.r, currentPlayerDisabledColor.g, currentPlayerDisabledColor.b);
+        isSecondCard = false;
+    }
 
     private void MoveToNextPlayer()
     {

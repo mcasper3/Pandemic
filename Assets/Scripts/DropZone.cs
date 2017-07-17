@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler {
 
-    public enum DropZoneType { PLAYER, INFECTION, HAND };
+    public enum DropZoneType { PLAYER, INFECTION, HAND, DISEASE };
 
     public DropZoneType dropZoneType = DropZoneType.HAND;
     public Text usedCardCounter;
@@ -48,22 +48,37 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
     {
         var card = eventData.pointerDrag;
         Draggable draggable = card.GetComponent<Draggable>();
+        CubeDraggable cubeDraggable = card.GetComponent<CubeDraggable>();
 
         if (draggable != null)
         {
-            draggable.parentToReturnTo = this.transform;
-
-            if (dropZoneType == DropZoneType.HAND)
+            if (this.dropZoneType != DropZoneType.DISEASE)
             {
-                draggable.newPosition = new Vector3(0, 0);
+                draggable.parentToReturnTo = this.transform;
+
+                if (dropZoneType == DropZoneType.HAND)
+                {
+                    draggable.newPosition = new Vector3(0, 0);
+                }
+                else if (draggable.itemType == this.dropZoneType)
+                {
+                    usedCards.Add(card);
+
+                    if (usedCardCounter != null)
+                        usedCardCounter.text = (++usedCardCount).ToString();
+
+                    // Half the card's width (card is 56 x 83)
+                    draggable.newPosition = new Vector3(28, 0);
+                }
             }
-            else if (draggable.cardType == this.dropZoneType)
+        }
+        else if (cubeDraggable != null)
+        {
+            if (this.dropZoneType == DropZoneType.DISEASE)
             {
-                usedCards.Add(card);
-                usedCardCounter.text = (++usedCardCount).ToString();
+                cubeDraggable.parentToReturnTo = this.transform;
 
-                // Half the card's width and height (card is 56 x 83)
-                draggable.newPosition = new Vector3(28, 0);
+                cubeDraggable.newPosition = eventData.position;
             }
         }
     }

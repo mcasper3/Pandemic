@@ -10,7 +10,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public Transform parentToReturnTo;
     public Transform placeholderParent;
     public Vector3 newPosition;
-    public DropZone.DropZoneType cardType = DropZone.DropZoneType.PLAYER;
+    public DropZone.DropZoneType itemType = DropZone.DropZoneType.PLAYER;
 
     GameObject placeholder;
 
@@ -44,7 +44,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
         for (int i = placeholderParent.childCount - 1; i >= 0; i--)
         {
-            // Ew magic number
+            // Ew magic number for determining which row should be moveable
             if (this.transform.position.y - 41.5 > placeholderParent.GetChild(i).transform.position.y)
                 continue;
 
