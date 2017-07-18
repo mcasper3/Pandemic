@@ -7,7 +7,9 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour {
 
     public GameInfo gameInfo;
-    public CardDeck playerCardDeck;
+    public PlayerCardDeck playerCardDeck;
+    public InfectionCardDeck infectionCardDeck;
+    public DropZone infectionDiscardPile;
     public List<PlayerHand> playerHands;
 
     private int currentPlayer;
@@ -23,6 +25,11 @@ public class GameManager : MonoBehaviour {
 #endif
 
         SceneManager.LoadScene("Main Menu");
+    }
+
+    public void OnEpidemic()
+    {
+        gameInfo.UpdateEpidemicCounter();
     }
 
     public void OnPlayerCardClick()
@@ -58,6 +65,11 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public void OnCityDiscardClicked()
+    {
+        infectionCardDeck.AddCardsToTop(infectionDiscardPile.GetUsedCards());
+    }
+
 	// Use this for initialization
 	void Start () {
         StartGame();
@@ -69,12 +81,13 @@ public class GameManager : MonoBehaviour {
         AssignRoles();
 
         playerCardDeck.CreateDeck();
-        // TODO deal out x cards to each player (make sure to avoid epidemics)
-        // for int i = 0; i < total number of cards for players
-        // playerhand[i % 4].AddCard(card);
-        SetFirstPlayer(0);
 
-        // TODO figure out who will go first
+        DealCards();
+
+        playerCardDeck.AddPandemicCards();
+        playerCardDeck.ShuffleSections();
+
+        DetermineFirstPlayer();
     }
 
     private void AssignRoles()
@@ -87,6 +100,40 @@ public class GameManager : MonoBehaviour {
         roles.Add("Researcher");
         roles.Add("Scientist");
         roles.Add("Operations Expert");
+    }
+
+    private void DealCards()
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                playerHands[j].AddCard(playerCardDeck.DrawCard());
+            }
+        }
+    }
+
+    private void DetermineFirstPlayer()
+    {
+        int largestPoulation = 0;
+        int playerIndex = 0;
+        int currentPopulation;
+
+        for (int i = 0; i < 4; i++)
+        {
+            foreach (var card in playerHands[i].GetCards())
+            {
+                currentPopulation = card.GetComponent<CardModel>().population;
+
+                if (currentPopulation > largestPoulation)
+                {
+                    playerIndex = i;
+                    largestPoulation = currentPopulation;
+                }
+            }
+        }
+
+        SetFirstPlayer(playerIndex);
     }
 
     private void SetFirstPlayer(int position)

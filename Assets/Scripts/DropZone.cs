@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler {
 
-    public enum DropZoneType { PLAYER, INFECTION, HAND, DISEASE };
+    public enum DropZoneType { PLAYER, INFECTION, HAND, DISEASE, DISEASE_DISPOSAL };
 
     public DropZoneType dropZoneType = DropZoneType.HAND;
     public Text usedCardCounter;
@@ -46,9 +46,9 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
     public void OnDrop(PointerEventData eventData)
     {
-        var card = eventData.pointerDrag;
-        Draggable draggable = card.GetComponent<Draggable>();
-        CubeDraggable cubeDraggable = card.GetComponent<CubeDraggable>();
+        var item = eventData.pointerDrag;
+        Draggable draggable = item.GetComponent<Draggable>();
+        CubeDraggable cubeDraggable = item.GetComponent<CubeDraggable>();
 
         if (draggable != null)
         {
@@ -62,7 +62,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
                 }
                 else if (draggable.itemType == this.dropZoneType)
                 {
-                    usedCards.Add(card);
+                    usedCards.Add(item);
 
                     if (usedCardCounter != null)
                         usedCardCounter.text = (++usedCardCount).ToString();
@@ -80,7 +80,22 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
                 cubeDraggable.newPosition = eventData.position;
             }
+            else if (this.dropZoneType == DropZoneType.DISEASE_DISPOSAL && !cubeDraggable.isStockCube)
+            {
+                this.transform.parent.GetComponent<GameInfo>().UpdateCubeCounter(cubeDraggable.cubeColor, false);
+                Destroy(item);
+            }
         }
+    }
+
+    public List<GameObject> GetUsedCards()
+    {
+        return usedCards;
+    }
+
+    public void ClearUsedCards()
+    {
+        usedCards.Clear();
     }
 
     public void OnClick()

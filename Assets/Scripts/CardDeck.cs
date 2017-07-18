@@ -19,7 +19,9 @@ public class CardDeck : MonoBehaviour
     void Start()
     {
         cards = new List<int>();
-        cardCount.text = numCards.ToString();
+
+        if (cardCount != null)
+            cardCount.text = numCards.ToString();
 
         numCards = cardType == DropZone.DropZoneType.PLAYER ? 59 : 48;
         // TODO remove
@@ -88,10 +90,18 @@ public class CardDeck : MonoBehaviour
     public void AddCardsToTop(IEnumerable<int> cardsToInsert)
     {
         cards.InsertRange(0, cardsToInsert);
+        numCards = cards.Count;
+    }
+
+    public void AddCardToTop(int card)
+    {
+        cards.Insert(0, card);
+        numCards++;
     }
 
     public void AddCard(int card)
     {
-        cards.Insert(0, card);
+        cards.Add(card);
+        numCards++;
     }
 }
