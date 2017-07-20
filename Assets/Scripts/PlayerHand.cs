@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerHand : MonoBehaviour {
-    private List<GameObject> cards;
+    public List<GameObject> cards;
 
     private void Start()
     {
@@ -11,12 +11,28 @@ public class PlayerHand : MonoBehaviour {
             cards = new List<GameObject>();
     }
 
-    public IEnumerable<GameObject> GetCards()
+    public List<GameObject> GetCards()
     {
-        foreach (var card in cards)
+        return cards;
+    }
+
+    public void ClearHand()
+    {
+        int cardCount = cards.Count;
+
+        for (int i = 0; i < cardCount; i++)
         {
-            yield return card;
+            Destroy(cards[0]);
+            cards.RemoveAt(0);
         }
+    }
+
+    public void RemoveCard(GameObject card)
+    {
+        if (cards == null)
+            return;
+
+        cards.Remove(card);
     }
 
     public void AddCard(GameObject card)

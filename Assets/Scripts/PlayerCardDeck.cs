@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerCardDeck : MonoBehaviour {
+    public const int UPDATE_COUNTER = 150;
+
     public Text cardCount;
     public GameObject cardPrefab;
     public DropZone.DropZoneType cardType;
@@ -20,6 +22,21 @@ public class PlayerCardDeck : MonoBehaviour {
     {
         cards = new List<int>();
         numCards = 59;
+    }
+
+    private void Awake()
+    {
+        PhotonNetwork.OnEventCall += OnEvent;
+    }
+
+    private void OnEvent(byte eventCode, object content, int senderId)
+    {
+        if (eventCode == UPDATE_COUNTER)
+        {
+            numCards = (int)content;
+
+            cardCount.text = numCards.ToString();
+        }
     }
 
     public void CreateDeck()
@@ -45,30 +62,32 @@ public class PlayerCardDeck : MonoBehaviour {
         CardModel cardModel = cardGameObject.GetComponent<CardModel>();
         cardModel.ShowCardFace(card);
 
+        PhotonNetwork.RaiseEvent(UPDATE_COUNTER, numCards, true, null);
+
         return cardGameObject;
     }
 
     public void Shuffle(int start, int end)
     {
-        while (start > 1)
+        while (end > start + 1)
         {
-            start--;
+            end--;
 
             int k = Random.Range(start, end + 1);
             int temp = cards[k];
-            cards[k] = cards[start];
-            cards[start] = temp;
+            cards[k] = cards[end];
+            cards[end] = temp;
         }
     }
 
 	public void AddPandemicCards()
     {
         cards.Insert(0, 53);
-        cards.Insert(10, 54);
-        cards.Insert(19, 55);
-        cards.Insert(28, 56);
-        cards.Insert(36, 57);
-        cards.Insert(44, 58);
+        cards.Insert(9, 54);
+        cards.Insert(18, 55);
+        cards.Insert(27, 56);
+        cards.Insert(35, 57);
+        cards.Insert(43, 58);
     }
 
     public void ShuffleSections()

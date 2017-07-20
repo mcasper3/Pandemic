@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class InfectionCardDeck : MonoBehaviour {
+    public const int UPDATE_INFECTION_COUNTER = 180;
+
     public Text cardCount;
     public GameObject cardPrefab;
     public DropZone.DropZoneType cardType;
 
-    private List<int> cards;
+    public List<int> cards;
     private int numCards;
 
     public bool IsEmpty
@@ -21,6 +23,20 @@ public class InfectionCardDeck : MonoBehaviour {
         cards = new List<int>();
         numCards = 48;
         cardCount.text = "48";
+    }
+
+    private void Awake()
+    {
+        PhotonNetwork.OnEventCall += OnEvent;
+    }
+
+    private void OnEvent(byte eventCode, object content, int senderId)
+    {
+        if (eventCode == UPDATE_INFECTION_COUNTER)
+        {
+            numCards = (int)content;
+            cardCount.text = numCards.ToString();
+        }
     }
 
     public void CreateDeck()
@@ -45,6 +61,12 @@ public class InfectionCardDeck : MonoBehaviour {
         numCards = cards.Count;
 
         Shuffle(0, cardsAdded);
+
+        cardCount.text = numCards.ToString();
+
+        Debug.Log(numCards + " is the number of cards");
+
+        PhotonNetwork.RaiseEvent(UPDATE_INFECTION_COUNTER, numCards, true, null);
     }
 
     public GameObject DrawCard()
@@ -59,6 +81,8 @@ public class InfectionCardDeck : MonoBehaviour {
 
         CardModel cardModel = cardGameObject.GetComponent<CardModel>();
         cardModel.ShowCardFace(card);
+
+        PhotonNetwork.RaiseEvent(UPDATE_INFECTION_COUNTER, numCards, true, null);
 
         return cardGameObject;
     }
@@ -84,6 +108,8 @@ public class InfectionCardDeck : MonoBehaviour {
         cards.RemoveAt(lastCardPosition);
         numCards--;
         cardCount.text = numCards.ToString();
+
+        PhotonNetwork.RaiseEvent(UPDATE_INFECTION_COUNTER, numCards, true, null);
 
         GameObject cardGameObject = Instantiate<GameObject>(cardPrefab);
 

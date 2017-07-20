@@ -5,11 +5,14 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler {
+    public const int SYNC_PLAYER_DISCARD = 120;
+    public const int SYNC_INFECTION_DISCARD = 121;
 
     public enum DropZoneType { PLAYER, INFECTION, HAND, DISEASE, DISEASE_DISPOSAL };
 
     public DropZoneType dropZoneType = DropZoneType.HAND;
     public Text usedCardCounter;
+    public GameObject cardPrefab;
 
     public List<GameObject> usedCards;
     private int usedCardCount;
@@ -55,22 +58,34 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         {
             if (this.dropZoneType != DropZoneType.DISEASE)
             {
-                draggable.parentToReturnTo = this.transform;
-
                 if (dropZoneType == DropZoneType.HAND)
                 {
+                    draggable.parentToReturnTo = this.transform;
                     draggable.newPosition = new Vector3(0, 0);
+
+                    var playerHand = draggable.originalParent.GetComponent<PlayerHand>();
+
+                    if (playerHand != null)
+                        playerHand.RemoveCard(draggable.gameObject);
+
+                    this.GetComponent<PlayerHand>().AddCard(draggable.gameObject);
                 }
                 else if (draggable.itemType == this.dropZoneType)
                 {
                     usedCards.Add(item);
+                    draggable.parentToReturnTo = this.transform;
 
                     if (usedCardCounter != null)
                         usedCardCounter.text = (++usedCardCount).ToString();
 
                     // Half the card's width (card is 56 x 83)
                     draggable.newPosition = new Vector3(28, 0);
+
+                    draggable.originalParent.GetComponent<PlayerHand>().RemoveCard(draggable.gameObject);
                 }
+
+                GameObject.FindObjectOfType<Canvas>().GetComponent<GameManager>().SyncAllHandsAndDiscard();
+                SyncDiscard();
             }
         }
         else if (cubeDraggable != null)
@@ -83,6 +98,10 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
             }
             else if (this.dropZoneType == DropZoneType.DISEASE_DISPOSAL && !cubeDraggable.isStockCube)
             {
+                float[] destroyPosition = new float[] { cubeDraggable.originalPosition.x, cubeDraggable.originalPosition.y, cubeDraggable.originalPosition.z };
+
+                PhotonNetwork.RaiseEvent(GameManager.DESTROY_CUBE, destroyPosition, true, null);
+
                 this.transform.parent.GetComponent<GameInfo>().UpdateCubeCounter(cubeDraggable.cubeColor, false);
                 Destroy(item);
             }
@@ -96,6 +115,10 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
     public void ClearUsedCards()
     {
+        foreach (var card in usedCards)
+        {
+            Destroy(card);
+        }
         usedCards.Clear();
     }
 
@@ -105,7 +128,6 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         {
             if (this.transform.childCount > 2)
             {
-                // TODO show all cards in the usedCards list
                 usedCardDisplay = new GameObject();
                 Image image = usedCardDisplay.AddComponent<Image>();
                 image.color = new Color(73, 12, 94);
@@ -136,6 +158,8 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         {
             int numCards = usedCardDisplay.transform.childCount;
 
+            usedCards.Clear();
+
             for (int i = 0; i < numCards; i++)
             {
                 GameObject card = usedCardDisplay.transform.GetChild(0).gameObject;
@@ -151,6 +175,35 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
             Destroy(usedCardDisplay);
             usedCardDisplay = null;
+
+            GameObject.FindObjectOfType<Canvas>().GetComponent<GameManager>().SyncAllHandsAndDiscard();
+
+            SyncDiscard();
+        }
+    }
+
+    public void SyncDiscard()
+    {
+        usedCardCount = usedCards.Count;
+        Debug.Log("Used card count: " + usedCardCount);
+
+        usedCardCounter.text = usedCardCount.ToString();
+
+        int[] info = new int[usedCardCount];
+        for (int i = 0; i < usedCardCount; i++)
+        {
+            info[i] = usedCards[i].GetComponent<CardModel>().cardPosition;
+        }
+
+        if (this.dropZoneType == DropZoneType.PLAYER)
+        {
+            PhotonNetwork.RaiseEvent(SYNC_PLAYER_DISCARD, info, true, null);
+        }
+        else if (this.dropZoneType == DropZoneType.INFECTION)
+        {
+            Debug.Log("Raising correct event");
+
+            PhotonNetwork.RaiseEvent(SYNC_INFECTION_DISCARD, info, true, null);
         }
     }
 
@@ -158,5 +211,47 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
     {
         usedCards = new List<GameObject>();
         usedCardCount = 0;
+    }
+
+    private void Awake()
+    {
+        PhotonNetwork.OnEventCall += OnEvent;
+    }
+
+    private void OnEvent(byte eventCode, object content, int senderId)
+    {
+        if ((eventCode == SYNC_PLAYER_DISCARD && dropZoneType == DropZoneType.PLAYER) || (eventCode == SYNC_INFECTION_DISCARD && dropZoneType == DropZoneType.INFECTION))
+        {
+            int childCount = this.transform.childCount;
+
+            for (int i = childCount - 1; i >= 0; i--)
+            {
+                if (this.transform.GetChild(i).GetComponent<CardModel>() != null)
+                    Destroy(this.transform.GetChild(i).gameObject);
+            }
+
+            usedCards.Clear();
+
+            int[] cards = (int[])content;
+
+            usedCardCount = cards.Length;
+
+            usedCardCounter.text = usedCardCount.ToString();
+
+            foreach (int card in cards)
+            {
+                GameObject cardGameObject = Instantiate<GameObject>(cardPrefab);
+
+                CardModel cardModel = cardGameObject.GetComponent<CardModel>();
+                cardModel.ShowCardFace(card);
+
+                cardGameObject.transform.SetParent(this.transform);
+                cardGameObject.transform.localPosition = new Vector3(28, 0);
+                cardGameObject.transform.SetSiblingIndex(cardGameObject.transform.GetSiblingIndex() - 2);
+                cardGameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
+
+                usedCards.Add(cardGameObject);
+            }
+        }
     }
 }

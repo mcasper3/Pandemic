@@ -9,6 +9,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 {
     public Transform parentToReturnTo;
     public Transform placeholderParent;
+    public Transform originalParent;
     public Vector3 newPosition;
     public DropZone.DropZoneType itemType = DropZone.DropZoneType.PLAYER;
 
@@ -18,6 +19,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
         parentToReturnTo = this.transform.parent;
         placeholderParent = parentToReturnTo;
+        originalParent = parentToReturnTo;
 
         placeholder = new GameObject();
         var le = placeholder.AddComponent<LayoutElement>();
@@ -70,12 +72,19 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         {
             this.transform.localPosition = newPosition;
             this.transform.SetSiblingIndex(this.transform.GetSiblingIndex() - 2);
+
+            // Being discarded
         }
         else
         {
             this.GetComponent<CanvasGroup>().blocksRaycasts = true;
             this.transform.SetSiblingIndex(placeholder.transform.GetSiblingIndex());
+
+            // Being put in another person's hand
         }
+
+        // sync all hands and discard
+        //PhotonNetwork.RaiseEvent(GameManager.SYNC_DISCARD_AND_HANDS, null, true, null);
 
         Destroy(placeholder);
     }

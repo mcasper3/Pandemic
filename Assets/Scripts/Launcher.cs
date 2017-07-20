@@ -14,18 +14,40 @@ public class Launcher : Photon.PunBehaviour {
         PhotonNetwork.automaticallySyncScene = true;
     }
 
-    public void MasterServerConnect()
+    public void Connect()
     {
-        Debug.Log("Trying to connect to master server");
+        if (PhotonNetwork.connected)
+        {
+            PhotonNetwork.JoinRandomRoom();
 
-        PhotonNetwork.ConnectUsingSettings(this.version);
+            Debug.Log("Joining random room");
+        }
+        else
+        {
+            PhotonNetwork.ConnectUsingSettings(version);
+        }
     }
 
     public override void OnConnectedToMaster()
     {
         Debug.Log("Connected successfully");
 
-        SceneManager.LoadScene("Connection");
+        PhotonNetwork.JoinRandomRoom();
+    }
+
+    public override void OnPhotonRandomJoinFailed(object[] codeAndMsg)
+    {
+        Debug.Log("Failed to join random room. Creating new room");
+
+        PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = 4 }, null);
+    }
+
+    public override void OnJoinedRoom()
+    {
+        if (PhotonNetwork.room.PlayerCount == 1)
+        {
+            PhotonNetwork.LoadLevel("Connection");
+        }
     }
 
     public override void OnFailedToConnectToPhoton(DisconnectCause cause)

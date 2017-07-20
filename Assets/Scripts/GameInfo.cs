@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class GameInfo : MonoBehaviour {
+    public const int UPDATE_COUNTERS = 100;
 
     public Text redCubeCounter;
     public Text blueCubeCounter;
@@ -32,6 +33,52 @@ public class GameInfo : MonoBehaviour {
         numResearchCenters = 6;
     }
 
+    private void Awake()
+    {
+        PhotonNetwork.OnEventCall += OnEvent;
+    }
+
+    private void OnEvent(byte eventCode, object content, int senderId)
+    {
+        switch (eventCode)
+        {
+            case UPDATE_COUNTERS:
+                UpdateCounters((int[])content);
+                break;
+        }
+    }
+
+    public void UpdateCounters(int[] values)
+    {
+        numBlackCubes = values[0];
+        numBlueCubes = values[1];
+        numRedCubes = values[2];
+        numYellowCubes = values[3];
+        numResearchCenters = values[4];
+        numOutbreaks = values[5];
+        numEpidemics = values[6];
+
+        blackCubeCounter.text = numBlackCubes.ToString();
+        blueCubeCounter.text = numBlueCubes.ToString();
+        redCubeCounter.text = numRedCubes.ToString();
+        yellowCubeCounter.text = numYellowCubes.ToString();
+        researchCenterCounter.text = numResearchCenters.ToString();
+        outbreakCounter.text = numOutbreaks.ToString();
+
+        if (numEpidemics > 4)
+        {
+            infectionRateCounter.text = "4";
+        }
+        else if (numEpidemics > 2)
+        {
+            infectionRateCounter.text = "3";
+        }
+        else
+        {
+            infectionRateCounter.text = "2";
+        }
+    }
+
     public void UpdateCubeCounter(CubeDraggable.CubeColor cubeColor, bool shouldDecrement)
     {
         switch (cubeColor)
@@ -57,6 +104,8 @@ public class GameInfo : MonoBehaviour {
                 researchCenterCounter.text = numResearchCenters.ToString();
                 break;
         }
+
+        SendUpdateEvent();
     }
 
     public void UpdateInfectionRate()
@@ -75,10 +124,30 @@ public class GameInfo : MonoBehaviour {
         {
             infectionRateCounter.text = "2";
         }
+
+        SendUpdateEvent();
     }
 
     public void UpdateEpidemicCounter()
     {
         outbreakCounter.text = (++numOutbreaks).ToString();
+
+        SendUpdateEvent();
+    }
+
+    private void SendUpdateEvent()
+    {
+        int[] values = new int[]
+        {
+            numBlackCubes,
+            numBlueCubes,
+            numRedCubes,
+            numYellowCubes,
+            numResearchCenters,
+            numOutbreaks,
+            numEpidemics
+        };
+
+        PhotonNetwork.RaiseEvent(UPDATE_COUNTERS, values, true, null);
     }
 }
