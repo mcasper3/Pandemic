@@ -13,26 +13,31 @@ public class GameManager : MonoBehaviour {
     public const int CREATE_YELLOW = 4;
     public const int CREATE_RESEARCH = 5;
     public const int DESTROY_CUBE = 6;
+    public const int CREATE_PLAYER_TOKEN = 7;
 
     public const int DRAW_PLAYER_CARD = 20;
     public const int DRAW_INFECTION_CARD = 21;
     public const int SYNC_DISCARD_AND_HANDS = 22;
     public const int SYNC_PLAYER_HAND = 23;
     public const int READD_CITIES = 24;
+    public const int SYNC_PLAYER_COLORS = 25;
 
     public GameInfo gameInfo;
     public PlayerCardDeck playerCardDeck;
     public InfectionCardDeck infectionCardDeck;
     public DropZone infectionDiscardPile;
     public List<PlayerHand> playerHands;
+    public List<GameObject> playerTokens;
     public GameObject cubePrefab;
     public GameObject playerCardPrefab;
+    public GameObject playerTokenPrefab;
 
     private int currentPlayer;
-    private Color currentPlayerDisabledColor;
+    private Color32 currentPlayerDisabledColor;
     private bool isSecondCard;
 
     private List<string> roles;
+    private List<Color32> roleColors;
     
     public void EndGame()
     {
@@ -142,7 +147,7 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Log("Received Event: " + eventCode);
 
-        if (eventCode <= DESTROY_CUBE)
+        if (eventCode <= CREATE_PLAYER_TOKEN)
         {
             float[] info = (float[])content;
 
@@ -164,6 +169,10 @@ public class GameManager : MonoBehaviour {
                     break;
                 case CREATE_RESEARCH:
                     CreateCube(CubeDraggable.CubeColor.RESEARCH, position);
+                    break;
+                case CREATE_PLAYER_TOKEN:
+                    Color color = new Color32((byte)info[3], (byte)info[4], (byte)info[5], 255);
+                    CreateCube(CubeDraggable.CubeColor.PLAYER_TOKEN, position, color);
                     break;
                 case DESTROY_CUBE:
                     DestroyCube(position);
@@ -199,6 +208,10 @@ public class GameManager : MonoBehaviour {
         else if (eventCode == READD_CITIES)
         {
             ReaddCitiesForInfection();
+        }
+        else if (eventCode == SYNC_PLAYER_COLORS)
+        {
+            SyncPlayerColors((byte[])content);
         }
     }
 
@@ -236,35 +249,49 @@ public class GameManager : MonoBehaviour {
         infectionDiscardPile.SyncDiscard();
     }
 
-    public void CreateCube(CubeDraggable.CubeColor color, Vector3 position)
+    public void CreateCube(CubeDraggable.CubeColor color, Vector3 position, Color32 tokenColor = new Color32())
     {
         Debug.Log("Creating cube of color: " + color.ToString());
 
-        GameObject go = Instantiate<GameObject>(cubePrefab);
+        GameObject go;
+        if (color == CubeDraggable.CubeColor.PLAYER_TOKEN) {
+            go = Instantiate<GameObject>(playerTokenPrefab);
+        }
+        else
+        {
+            go = Instantiate<GameObject>(cubePrefab);
+        }
 
         var image = go.GetComponent<Image>();
 
         switch (color)
         {
             case CubeDraggable.CubeColor.BLACK:
-                image.color = new Color(0, 0, 0);
+                image.color = new Color32(0, 0, 0, 255);
                 break;
             case CubeDraggable.CubeColor.BLUE:
-                image.color = new Color(0, 0, 255);
+                image.color = new Color32(0, 0, 255, 255);
                 break;
             case CubeDraggable.CubeColor.RED:
-                image.color = new Color(255, 0, 0);
+                image.color = new Color32(255, 0, 0, 255);
                 break;
             case CubeDraggable.CubeColor.YELLOW:
-                image.color = new Color(255, 237, 0);
+                image.color = new Color32(255, 237, 0, 255);
                 break;
             case CubeDraggable.CubeColor.RESEARCH:
-                image.color = new Color(255, 255, 255);
+                image.color = new Color32(255, 255, 255, 255);
 
                 var rectTransform = go.GetComponent<RectTransform>();
                 rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 25);
                 rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 15);
 
+                break;
+            case CubeDraggable.CubeColor.PLAYER_TOKEN:
+                image.color = tokenColor;
+
+                var rect = go.GetComponent<RectTransform>();
+                rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 25);
+                rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 25);
                 break;
         }
 
@@ -284,7 +311,8 @@ public class GameManager : MonoBehaviour {
         {
             var objPos = go.transform.position;
 
-            if (Mathf.Approximately(objPos.x, position.x) && Mathf.Approximately(objPos.y, position.y) && Mathf.Approximately(objPos.z, position.z) && go.GetComponent<CubeDraggable>() != null)
+            if (Mathf.Approximately(objPos.x, position.x) && Mathf.Approximately(objPos.y, position.y) && Mathf.Approximately(objPos.z, position.z) &&
+                go.GetComponent<CubeDraggable>() != null)
             {
                 Destroy(go);
             }
@@ -326,6 +354,8 @@ public class GameManager : MonoBehaviour {
     private void AssignRoles()
     {
         roles = new List<string>(7);
+        roleColors = new List<Color32>(7);
+
         roles.Add("Medic");
         roles.Add("Dispatcher");
         roles.Add("Quarantine Specialist");
@@ -333,6 +363,54 @@ public class GameManager : MonoBehaviour {
         roles.Add("Researcher");
         roles.Add("Scientist");
         roles.Add("Operations Expert");
+
+        roleColors.Add(new Color32(255, 96, 14, 255)); // #FF600E
+        roleColors.Add(new Color32(241, 104, 191, 255)); // #F168BF
+        roleColors.Add(new Color32(24, 105, 29, 255)); // #22691D
+        roleColors.Add(new Color32(67, 217, 232, 255)); // #43D9E8
+        roleColors.Add(new Color32(178, 87, 41, 255)); // #B25729
+        roleColors.Add(new Color32(239, 241, 237, 255)); // #EFF1ED
+        roleColors.Add(new Color32(102, 194, 17, 255)); // #66C211
+
+        List<int> selectedRoles = new List<int>();
+        HashSet<int> selectedIndices = new HashSet<int>();
+        int next;
+
+        for (int i = 0; i < 4; i++)
+        {
+            do
+            {
+                next = Random.Range(0, 7);
+            }
+            while (selectedIndices.Contains(next));
+
+            selectedIndices.Add(next);
+            selectedRoles.Add(next);
+        }
+
+        byte[] info = new byte[12];
+
+        for (int i = 0; i < 4; i++)
+        {
+            var color = roleColors[selectedRoles[i]];
+            playerHands[i].GetComponent<Image>().color = color;
+            playerTokens[i].GetComponent<Image>().color = color;
+            info[i * 3] = color.r;
+            info[i * 3 + 1] = color.g;
+            info[i * 3 + 2] = color.b;
+        }
+
+        PhotonNetwork.RaiseEvent(SYNC_PLAYER_COLORS, info, true, null);
+    }
+
+    private void SyncPlayerColors(byte[] colors)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            var color = new Color32(colors[i * 3], colors[i * 3 + 1], colors[i * 3 + 2], 255);
+            playerHands[i].GetComponent<Image>().color = color;
+            playerTokens[i].GetComponent<Image>().color = color;
+        }
     }
 
     private void DealCards()
@@ -398,7 +476,7 @@ public class GameManager : MonoBehaviour {
     {
         currentPlayer = position;
         currentPlayerDisabledColor = playerHands[position].GetComponent<Image>().color;
-        playerHands[position].GetComponent<Image>().color = new Color(currentPlayerDisabledColor.r, currentPlayerDisabledColor.g, currentPlayerDisabledColor.b);
+        playerHands[position].GetComponent<Image>().color = new Color32(currentPlayerDisabledColor.r, currentPlayerDisabledColor.g, currentPlayerDisabledColor.b, 255);
         isSecondCard = false;
     }
 
@@ -410,6 +488,6 @@ public class GameManager : MonoBehaviour {
 
         currentPlayerDisabledColor = playerHands[currentPlayer].GetComponent<Image>().color;
 
-        playerHands[currentPlayer].GetComponent<Image>().color = new Color(currentPlayerDisabledColor.r, currentPlayerDisabledColor.g, currentPlayerDisabledColor.b);
+        playerHands[currentPlayer].GetComponent<Image>().color = new Color32(currentPlayerDisabledColor.r, currentPlayerDisabledColor.g, currentPlayerDisabledColor.b, 255);
     }
 }

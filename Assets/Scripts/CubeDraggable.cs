@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class CubeDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public enum CubeColor { BLUE, BLACK, YELLOW, RED, RESEARCH };
+    public enum CubeColor { BLUE, BLACK, YELLOW, RED, RESEARCH, PLAYER_TOKEN };
 
     public Transform parentToReturnTo;
     public Vector3 newPosition;
@@ -43,16 +43,16 @@ public class CubeDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             switch (cubeColor)
             {
                 case CubeColor.BLACK:
-                    image.color = new Color(0, 0, 0);
+                    image.color = new Color32(0, 0, 0, 255);
                     break;
                 case CubeColor.BLUE:
-                    image.color = new Color(0, 0, 255);
+                    image.color = new Color32(0, 0, 255, 255);
                     break;
                 case CubeColor.RED:
-                    image.color = new Color(255, 0, 0);
+                    image.color = new Color32(255, 0, 0, 255);
                     break;
                 case CubeColor.YELLOW:
-                    image.color = new Color(255, 237, 0);
+                    image.color = new Color32(255, 237, 0, 255);
                     break;
             }
         }
@@ -80,6 +80,7 @@ public class CubeDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         else
         {
             byte eventCode;
+            float[] info;
 
             switch (cubeColor)
             {
@@ -98,15 +99,35 @@ public class CubeDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
                 case CubeColor.RESEARCH:
                     eventCode = GameManager.CREATE_RESEARCH;
                     break;
+                case CubeColor.PLAYER_TOKEN:
+                    eventCode = GameManager.CREATE_PLAYER_TOKEN;
+                    break;
                 default:
                     eventCode = GameManager.CREATE_BLACK;
                     break;
             }
 
-            float[] createPosition = new float[] { newPosition.x, newPosition.y, newPosition.z };
+            if (eventCode == GameManager.CREATE_PLAYER_TOKEN)
+            {
+                info = new float[6];
+
+                Color color = this.GetComponent<Image>().color;
+
+                info[3] = color.r;
+                info[4] = color.g;
+                info[5] = color.b;
+            }
+            else
+            {
+                info = new float[3];
+            }
+
+            info[0] = newPosition.x;
+            info[1] = newPosition.y;
+            info[2] = newPosition.z;
 
             Debug.Log("Sent event");
-            PhotonNetwork.RaiseEvent(eventCode, createPosition, true, null);
+            PhotonNetwork.RaiseEvent(eventCode, info, true, null);
 
             if (isStockCube)
             {
@@ -115,9 +136,11 @@ public class CubeDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             }
             else
             {
-                float[] destroyPosition = new float[] { originalPosition.x, originalPosition.y, originalPosition.z };
-
-                PhotonNetwork.RaiseEvent(GameManager.DESTROY_CUBE, destroyPosition, true, null);
+                if (this.newPosition != this.originalPosition)
+                {
+                    float[] destroyPosition = new float[] { originalPosition.x, originalPosition.y, originalPosition.z };
+                    PhotonNetwork.RaiseEvent(GameManager.DESTROY_CUBE, destroyPosition, true, null);
+                }
             }
         }
     }

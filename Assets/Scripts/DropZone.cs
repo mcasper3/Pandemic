@@ -130,7 +130,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
             {
                 usedCardDisplay = new GameObject();
                 Image image = usedCardDisplay.AddComponent<Image>();
-                image.color = new Color(73, 12, 94);
+                image.color = new Color32(73, 12, 94, 255);
 
                 RectTransform rect = usedCardDisplay.GetComponent<RectTransform>();
                 rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 500);
