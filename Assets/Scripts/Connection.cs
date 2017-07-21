@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class Connection : MonoBehaviour {
+public class Connection : Photon.PunBehaviour {
     private const string HAS_JOINED = " has joined!";
 
     public Text playerOneName;
@@ -13,9 +14,16 @@ public class Connection : MonoBehaviour {
 
     public void Start()
     {
-        if (PhotonNetwork.playerList.Length == 4)
+        UpdatePlayerList();
+    }
+
+    public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
+    {
+        Debug.Log("Player connected");
+
+        if (PhotonNetwork.room.PlayerCount == 2 && PhotonNetwork.isMasterClient)
         {
-            // TODO start game
+            PhotonNetwork.LoadLevel("Game");
         }
         else
         {
