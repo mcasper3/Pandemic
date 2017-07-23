@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Connection : Photon.PunBehaviour {
     private const string HAS_JOINED = " has joined!";
+    public byte START_GAME = 0;
 
     public Text playerOneName;
     public Text playerTwoName;
@@ -17,17 +18,42 @@ public class Connection : Photon.PunBehaviour {
         UpdatePlayerList();
     }
 
+    private void Awake()
+    {
+        PhotonNetwork.OnEventCall += OnEvent;
+    }
+
     public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
         Debug.Log("Player connected");
 
-        if (PhotonNetwork.room.PlayerCount == 2 && PhotonNetwork.isMasterClient)
+        if (PhotonNetwork.room.PlayerCount == 4 && PhotonNetwork.isMasterClient)
         {
             PhotonNetwork.LoadLevel("Game");
         }
         else
         {
             UpdatePlayerList();
+        }
+    }
+
+    public void OnStartGameClick()
+    {
+        if (PhotonNetwork.isMasterClient)
+        {
+            PhotonNetwork.LoadLevel("Game");
+        }
+        else
+        {
+            PhotonNetwork.RaiseEvent(START_GAME, null, true, null);
+        }
+    }
+
+    private void OnEvent(byte eventCode, object content, int senderId)
+    {
+        if (eventCode == START_GAME && PhotonNetwork.isMasterClient)
+        {
+            PhotonNetwork.LoadLevel("Game");
         }
     }
 

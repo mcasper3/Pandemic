@@ -8,10 +8,12 @@ public class CardModel : MonoBehaviour {
 
     public List<Sprite> cardFaces;
     public List<CardType> cardTypes;
+    public List<string> cityNames;
     public List<int> populations;
     public CardType cardType;
     public int cardPosition;
     public int population;
+    public Text cityName;
 
     Image image;
 
@@ -21,6 +23,8 @@ public class CardModel : MonoBehaviour {
         cardType = cardTypes[cardIndex];
         cardPosition = cardIndex;
         population = populations[cardIndex];
+
+        cityName.text = cityNames[cardIndex];
     }
 
     private void Awake()

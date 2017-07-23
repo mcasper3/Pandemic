@@ -334,7 +334,6 @@ public class GameManager : MonoBehaviour {
 
     private void StartGame()
     {
-        // TODO assign roles
         AssignRoles();
 
         playerCardDeck.CreateDeck();
@@ -347,8 +346,6 @@ public class GameManager : MonoBehaviour {
         infectionCardDeck.CreateDeck();
 
         DetermineFirstPlayer();
-
-        // TODO raise event stating order of deck / cards and such
     }
 
     private void AssignRoles()

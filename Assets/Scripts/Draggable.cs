@@ -71,7 +71,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (newPosition.x > 0)
         {
             this.transform.localPosition = newPosition;
-            this.transform.SetSiblingIndex(this.transform.GetSiblingIndex() - 2);
+            this.transform.SetSiblingIndex(this.transform.GetSiblingIndex() - 3);
 
             // Being discarded
         }
@@ -82,9 +82,6 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
             // Being put in another person's hand
         }
-
-        // sync all hands and discard
-        //PhotonNetwork.RaiseEvent(GameManager.SYNC_DISCARD_AND_HANDS, null, true, null);
 
         Destroy(placeholder);
     }

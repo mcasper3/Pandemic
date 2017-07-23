@@ -89,14 +89,14 @@ public class InfectionCardDeck : MonoBehaviour {
 
     public void Shuffle(int start, int end)
     {
-        while (start > 1)
+        while (end > start + 1)
         {
-            start--;
+            end--;
 
             int k = Random.Range(start, end + 1);
             int temp = cards[k];
-            cards[k] = cards[start];
-            cards[start] = temp;
+            cards[k] = cards[end];
+            cards[end] = temp;
         }
     }
 

@@ -164,7 +164,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
             {
                 GameObject card = usedCardDisplay.transform.GetChild(0).gameObject;
                 card.transform.SetParent(this.transform);
-                card.transform.SetSiblingIndex(card.transform.GetSiblingIndex() - 2);
+                card.transform.SetSiblingIndex(this.transform.childCount - 3);
                 card.transform.localPosition = new Vector3(28, 0);
                 card.GetComponent<CanvasGroup>().blocksRaycasts = false;
                 usedCards.Add(card);
@@ -247,7 +247,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
                 cardGameObject.transform.SetParent(this.transform);
                 cardGameObject.transform.localPosition = new Vector3(28, 0);
-                cardGameObject.transform.SetSiblingIndex(cardGameObject.transform.GetSiblingIndex() - 2);
+                cardGameObject.transform.SetSiblingIndex(this.transform.childCount - 3);
                 cardGameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
                 usedCards.Add(cardGameObject);
