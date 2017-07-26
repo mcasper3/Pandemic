@@ -1,0 +1,378 @@
+Initialize engine version: 5.6.2f1 (a2913c821e27)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 960M (ID=0x139b)
+    Vendor:   NVIDIA
+    VRAM:     2017 MB
+    Driver:   22.21.13.8205
+Begin MonoManager ReloadAssembly
+Platform assembly: D:\Users\Mike\Projects\Pandemic\Pandemic_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading D:\Users\Mike\Projects\Pandemic\Pandemic_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: D:\Users\Mike\Projects\Pandemic\Pandemic_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading D:\Users\Mike\Projects\Pandemic\Pandemic_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: D:\Users\Mike\Projects\Pandemic\Pandemic_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading D:\Users\Mike\Projects\Pandemic\Pandemic_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: D:\Users\Mike\Projects\Pandemic\Pandemic_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading D:\Users\Mike\Projects\Pandemic\Pandemic_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: D:\Users\Mike\Projects\Pandemic\Pandemic_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading D:\Users\Mike\Projects\Pandemic\Pandemic_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: D:\Users\Mike\Projects\Pandemic\Pandemic_Data\Managed\Photon3Unity3D.dll (this message is harmless)
+Loading D:\Users\Mike\Projects\Pandemic\Pandemic_Data\Managed\Photon3Unity3D.dll into Unity Child Domain
+- Completed reload, in  0.020 seconds
+Platform assembly: D:\Users\Mike\Projects\Pandemic\Pandemic_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: D:\Users\Mike\Projects\Pandemic\Pandemic_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 1.559700 ms
+OnStatusChanged: Connect current State: ConnectingToNameServer
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Connected to NameServer.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnStatusChanged: EncryptionEstablished current State: ConnectingToNameServer
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OperationResponse 230: ReturnCode: 0.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received your UserID from server. Updating local value to: 98c94fe0-dc7e-480e-ac5f-961bb150c12e
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnStatusChanged: Disconnect current State: DisconnectingFromNameServer
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnStatusChanged: Connect current State: ConnectingToMasterserver
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Connected to masterserver.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnStatusChanged: EncryptionEstablished current State: Authenticating
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 226.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OperationResponse 230: ReturnCode: 0.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Connected successfully
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OperationResponse 225: ReturnCode: 0.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnStatusChanged: Disconnect current State: DisconnectingFromMasterserver
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnStatusChanged: Connect current State: ConnectingToGameserver
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Connected to gameserver.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnStatusChanged: EncryptionEstablished current State: ConnectedToGameserver
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OperationResponse 230: ReturnCode: 0.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OperationResponse 226: ReturnCode: 0.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 5.459347 ms
+
+Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 448.
+Total: 0.294320 ms (FindLiveObjects: 0.040691 ms CreateObjectMapping: 0.032394 ms MarkObjects: 0.211357 ms  DeleteObjects: 0.009481 ms)
+
+OnEvent: Event 255.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 253.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.399011 ms
+
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 665.
+Total: 0.447999 ms (FindLiveObjects: 0.072296 ms CreateObjectMapping: 0.023308 ms MarkObjects: 0.348443 ms  DeleteObjects: 0.003555 ms)
+
+OnEvent: Event 25.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 25
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 150.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 150
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 150.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 150
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 150.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 150
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 150.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 150
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 150.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 150
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 150.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 150
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 150.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 150
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 150.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 150
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 23.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 23
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 23.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 23
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 23.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 23
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 23.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 23
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 7.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 7
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+IndexOutOfRangeException: Array index is out of range.
+  at GameManager.OnEvent (Byte eventCode, System.Object content, Int32 senderId) [0x00000] in <filename unknown>:0 
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at NetworkingPeer.OnEvent (ExitGames.Client.Photon.EventData photonEvent) [0x00000] in <filename unknown>:0 
+  at ExitGames.Client.Photon.PeerBase.DeserializeMessageAndCallback (System.Byte[] inBuff) [0x00000] in <filename unknown>:0 
+  at ExitGames.Client.Photon.EnetPeer.DispatchIncomingCommands () [0x00000] in <filename unknown>:0 
+  at ExitGames.Client.Photon.PhotonPeer.DispatchIncomingCommands () [0x00000] in <filename unknown>:0 
+  at PhotonHandler.Update () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+OnEvent: Event 6.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 6
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 7.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 7
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+IndexOutOfRangeException: Array index is out of range.
+  at GameManager.OnEvent (Byte eventCode, System.Object content, Int32 senderId) [0x00000] in <filename unknown>:0 
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at NetworkingPeer.OnEvent (ExitGames.Client.Photon.EventData photonEvent) [0x00000] in <filename unknown>:0 
+  at ExitGames.Client.Photon.PeerBase.DeserializeMessageAndCallback (System.Byte[] inBuff) [0x00000] in <filename unknown>:0 
+  at ExitGames.Client.Photon.EnetPeer.DispatchIncomingCommands () [0x00000] in <filename unknown>:0 
+  at ExitGames.Client.Photon.PhotonPeer.DispatchIncomingCommands () [0x00000] in <filename unknown>:0 
+  at PhotonHandler.Update () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+OnEvent: Event 6.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 6
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 7.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 7
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+IndexOutOfRangeException: Array index is out of range.
+  at GameManager.OnEvent (Byte eventCode, System.Object content, Int32 senderId) [0x00000] in <filename unknown>:0 
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at NetworkingPeer.OnEvent (ExitGames.Client.Photon.EventData photonEvent) [0x00000] in <filename unknown>:0 
+  at ExitGames.Client.Photon.PeerBase.DeserializeMessageAndCallback (System.Byte[] inBuff) [0x00000] in <filename unknown>:0 
+  at ExitGames.Client.Photon.EnetPeer.DispatchIncomingCommands () [0x00000] in <filename unknown>:0 
+  at ExitGames.Client.Photon.PhotonPeer.DispatchIncomingCommands () [0x00000] in <filename unknown>:0 
+  at PhotonHandler.Update () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+OnEvent: Event 6.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 6
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 7.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 7
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+IndexOutOfRangeException: Array index is out of range.
+  at GameManager.OnEvent (Byte eventCode, System.Object content, Int32 senderId) [0x00000] in <filename unknown>:0 
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at (wrapper delegate-invoke) PhotonNetwork/EventCallback:invoke_void__this___byte_object_int (byte,object,int)
+  at NetworkingPeer.OnEvent (ExitGames.Client.Photon.EventData photonEvent) [0x00000] in <filename unknown>:0 
+  at ExitGames.Client.Photon.PeerBase.DeserializeMessageAndCallback (System.Byte[] inBuff) [0x00000] in <filename unknown>:0 
+  at ExitGames.Client.Photon.EnetPeer.DispatchIncomingCommands () [0x00000] in <filename unknown>:0 
+  at ExitGames.Client.Photon.PhotonPeer.DispatchIncomingCommands () [0x00000] in <filename unknown>:0 
+  at PhotonHandler.Update () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+OnEvent: Event 6.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Received Event: 6
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+OnEvent: Event 254.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+HandleEventLeave for player ID: 1 evLeave: Event 254: {(Byte)252=(Int32[])System.Int32[], (Byte)203=(Int32)2, (Byte)254=(Int32)1}
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Setting up 4 worker threads for Enlighten.
+  Thread -> id: 619c -> priority: 1 
+  Thread -> id: cc4 -> priority: 1 
+  Thread -> id: 61a0 -> priority: 1 
+  Thread -> id: 5f14 -> priority: 1 

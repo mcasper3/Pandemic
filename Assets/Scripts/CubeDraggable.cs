@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,6 +12,7 @@ public class CubeDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public Vector3 newPosition;
     public Vector3 originalPosition;
     public bool isStockCube;
+    public int playerTokenType;
 
     public GameObject prefab;
     public CubeColor cubeColor;
@@ -103,19 +104,16 @@ public class CubeDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
                     eventCode = GameManager.CREATE_PLAYER_TOKEN;
                     break;
                 default:
-                    eventCode = GameManager.CREATE_BLACK;
-                    break;
+                    throw new Exception("This should not be called");
             }
 
             if (eventCode == GameManager.CREATE_PLAYER_TOKEN)
             {
-                info = new float[6];
+                info = new float[4];
 
-                Color color = this.GetComponent<Image>().color;
+                Color32 color = this.GetComponent<Image>().color;
 
-                info[3] = color.r;
-                info[4] = color.g;
-                info[5] = color.b;
+                info[3] = playerTokenType;
             }
             else
             {

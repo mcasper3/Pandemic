@@ -171,8 +171,8 @@ public class GameManager : MonoBehaviour {
                     CreateCube(CubeDraggable.CubeColor.RESEARCH, position);
                     break;
                 case CREATE_PLAYER_TOKEN:
-                    Color color = new Color32((byte)info[3], (byte)info[4], (byte)info[5], 255);
-                    CreateCube(CubeDraggable.CubeColor.PLAYER_TOKEN, position, color);
+                    Debug.Log((int)info[3] + " is the player position");
+                    CreateCube(CubeDraggable.CubeColor.PLAYER_TOKEN, position, (int)info[3]);
                     break;
                 case DESTROY_CUBE:
                     DestroyCube(position);
@@ -249,7 +249,7 @@ public class GameManager : MonoBehaviour {
         infectionDiscardPile.SyncDiscard();
     }
 
-    public void CreateCube(CubeDraggable.CubeColor color, Vector3 position, Color32 tokenColor = new Color32())
+    public void CreateCube(CubeDraggable.CubeColor color, Vector3 position, int playerTokenType = -1)
     {
         Debug.Log("Creating cube of color: " + color.ToString());
 
@@ -263,11 +263,13 @@ public class GameManager : MonoBehaviour {
         }
 
         var image = go.GetComponent<Image>();
+        var cubeDraggable = go.GetComponent<CubeDraggable>();
+        cubeDraggable.cubeColor = color;
 
         switch (color)
         {
             case CubeDraggable.CubeColor.BLACK:
-                image.color = new Color32(0, 0, 0, 255);
+                image.color = new Color32(0, 0, 255, 255);
                 break;
             case CubeDraggable.CubeColor.BLUE:
                 image.color = new Color32(0, 0, 255, 255);
@@ -287,7 +289,8 @@ public class GameManager : MonoBehaviour {
 
                 break;
             case CubeDraggable.CubeColor.PLAYER_TOKEN:
-                image.color = tokenColor;
+                image.color = roleColors[playerTokenType];
+                cubeDraggable.playerTokenType = playerTokenType;
 
                 var rect = go.GetComponent<RectTransform>();
                 rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 25);
@@ -295,7 +298,7 @@ public class GameManager : MonoBehaviour {
                 break;
         }
 
-        go.GetComponent<CubeDraggable>().isStockCube = false;
+        cubeDraggable.isStockCube = false;
 
         GameObject parent = GameObject.Find("Map");
         go.transform.SetParent(parent.transform);
@@ -321,6 +324,25 @@ public class GameManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        roles = new List<string>(7);
+        roleColors = new List<Color32>(7);
+
+        roles.Add("Medic");
+        roles.Add("Dispatcher");
+        roles.Add("Quarantine Specialist");
+        roles.Add("Contingency Planner");
+        roles.Add("Researcher");
+        roles.Add("Scientist");
+        roles.Add("Operations Expert");
+
+        roleColors.Add(new Color32(255, 96, 14, 255)); // #FF600E
+        roleColors.Add(new Color32(241, 104, 191, 255)); // #F168BF
+        roleColors.Add(new Color32(24, 105, 29, 255)); // #22691D
+        roleColors.Add(new Color32(67, 217, 232, 255)); // #43D9E8
+        roleColors.Add(new Color32(178, 87, 41, 255)); // #B25729
+        roleColors.Add(new Color32(239, 241, 237, 255)); // #EFF1ED
+        roleColors.Add(new Color32(102, 194, 17, 255)); // #66C211
+
         if (PhotonNetwork.isMasterClient)
         {
             StartGame();
@@ -350,25 +372,6 @@ public class GameManager : MonoBehaviour {
 
     private void AssignRoles()
     {
-        roles = new List<string>(7);
-        roleColors = new List<Color32>(7);
-
-        roles.Add("Medic");
-        roles.Add("Dispatcher");
-        roles.Add("Quarantine Specialist");
-        roles.Add("Contingency Planner");
-        roles.Add("Researcher");
-        roles.Add("Scientist");
-        roles.Add("Operations Expert");
-
-        roleColors.Add(new Color32(255, 96, 14, 255)); // #FF600E
-        roleColors.Add(new Color32(241, 104, 191, 255)); // #F168BF
-        roleColors.Add(new Color32(24, 105, 29, 255)); // #22691D
-        roleColors.Add(new Color32(67, 217, 232, 255)); // #43D9E8
-        roleColors.Add(new Color32(178, 87, 41, 255)); // #B25729
-        roleColors.Add(new Color32(239, 241, 237, 255)); // #EFF1ED
-        roleColors.Add(new Color32(102, 194, 17, 255)); // #66C211
-
         List<int> selectedRoles = new List<int>();
         HashSet<int> selectedIndices = new HashSet<int>();
         int next;
@@ -385,16 +388,18 @@ public class GameManager : MonoBehaviour {
             selectedRoles.Add(next);
         }
 
-        byte[] info = new byte[12];
+        byte[] info = new byte[16];
 
         for (int i = 0; i < 4; i++)
         {
             var color = roleColors[selectedRoles[i]];
             playerHands[i].GetComponent<Image>().color = color;
             playerTokens[i].GetComponent<Image>().color = color;
-            info[i * 3] = color.r;
-            info[i * 3 + 1] = color.g;
-            info[i * 3 + 2] = color.b;
+            playerTokens[i].GetComponent<CubeDraggable>().playerTokenType = selectedRoles[i];
+            info[i * 4] = color.r;
+            info[i * 4 + 1] = color.g;
+            info[i * 4 + 2] = color.b;
+            info[i * 4 + 3] = (byte)selectedRoles[i];
         }
 
         PhotonNetwork.RaiseEvent(SYNC_PLAYER_COLORS, info, true, null);
@@ -404,9 +409,10 @@ public class GameManager : MonoBehaviour {
     {
         for (int i = 0; i < 4; i++)
         {
-            var color = new Color32(colors[i * 3], colors[i * 3 + 1], colors[i * 3 + 2], 255);
+            var color = new Color32(colors[i * 4], colors[i * 4 + 1], colors[i * 4 + 2], 255);
             playerHands[i].GetComponent<Image>().color = color;
             playerTokens[i].GetComponent<Image>().color = color;
+            playerTokens[i].GetComponent<CubeDraggable>().playerTokenType = colors[i * 4 + 3];
         }
     }
 
