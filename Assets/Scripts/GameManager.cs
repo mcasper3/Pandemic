@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour {
     public DropZone infectionDiscardPile;
     public List<PlayerHand> playerHands;
     public List<GameObject> playerTokens;
+    public List<Text> playerNames;
     public GameObject cubePrefab;
     public GameObject playerCardPrefab;
     public GameObject playerTokenPrefab;
@@ -342,6 +343,12 @@ public class GameManager : MonoBehaviour {
         roleColors.Add(new Color32(178, 87, 41, 255)); // #B25729
         roleColors.Add(new Color32(239, 241, 237, 255)); // #EFF1ED
         roleColors.Add(new Color32(102, 194, 17, 255)); // #66C211
+
+        int numPlayers = PhotonNetwork.playerList.Length;
+        for (int i = 0; i < numPlayers; i++)
+        {
+            playerNames[i].text = PhotonNetwork.playerList[i].NickName;
+        }
 
         if (PhotonNetwork.isMasterClient)
         {

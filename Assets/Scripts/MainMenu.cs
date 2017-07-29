@@ -32,7 +32,7 @@ public class MainMenu : MonoBehaviour {
     {
         Debug.Log("Selected Name: " + userName.text);
 
-        PhotonNetwork.playerName = userName.text + " ";
+        PhotonNetwork.player.NickName = userName.text + " ";
 
         PlayerPrefs.SetString("name", userName.text);
     }
